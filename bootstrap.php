@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * bootstrap
+ * 
+ * @package Sngine
+ */
+
+// set ABSPATH
+define('ABSPATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// get system version & exceptions
+require(ABSPATH . 'includes/sys_ver.php');
+require(ABSPATH . 'includes/exceptions.php');
+
+// require dependencies
+require(ABSPATH . 'vendor/autoload.php');
+
+// get functions
+require(ABSPATH . 'includes/functions.php');
+
+// check config file
+if (!file_exists(ABSPATH . 'includes/config.php')) {
+  header('Location: ./install');
+  exit;
+}
+
+// get config file
+require(ABSPATH . 'includes/config.php');
+
+// set debugging settings
+if (DEBUGGING) {
+  ini_set("display_errors", true);
+  error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+} else {
+  ini_set("display_errors", false);
+  error_reporting(0);
+}
+
+// configure localization
+$gettextLoader = new Gettext\Loader\PoLoader();
+$gettextTranslator = Gettext\Translations::create('default');
+
+// check system URL
+if (URL_CHECK) {
+  check_system_url();
+}
+
+// init system session
+init_system_session();
+
+// init system datetime
+$date = init_system_datetime();
+
+// init database connection
+try {
+  $db = init_db_connection();
+} catch (Exception $e) {
+  _error('DB_ERROR');
+}
+
+// init system
+try {
+  $system = init_system();
+} catch (Exception $e) {
+  _error(__("Error"), $e->getMessage());
+}
+
+// get system session hash
+$session_hash = get_system_session_hash($system['session_hash']);
+if (!$session_hash) {
+  $_SESSION = [];
+
+  if (session_status() === PHP_SESSION_ACTIVE) {
+    session_destroy();
+  }
+
+  if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
+}
+
+// init smarty
+$smarty = init_smarty();
+
+// get user
+require_once(ABSPATH . 'includes/class-user.php');
+try {
+  $user = new User();
+} catch (Exception $e) {
+  _error(__("Error"), $e->getMessage());
+}
+
+/* -------------------- */
+/* ESSENTIAL CHECKS */
+/* -------------------- */
+
+// check if system is live
+if (
+  !$system['system_live'] &&
+  (
+    (!$user->_logged_in && !isset($override_shutdown)) ||
+    ($user->_logged_in && $user->_data['user_group'] != 1)
+  )
+) {
+  _error(__('System Message'), $system['system_message']);
+}
+
+// check if the viewer IP is banned
+if ($system['viewer_ip_banned']) {
+  _error(__("System Message"), __("Your IP has been blocked"));
+}
+
+// check if the viewer is banned
+if ($user->_is_banned) {
+  _error(__("System Message"), $user->_data['user_banned_message']);
+}
+
+
+/* -------------------- */
+/* PERFORMANCE OPTIMIZED PART */
+/* -------------------- */
+
+// assign basic variables (LIGHTWEIGHT)
+$smarty->assign('secret', $_SESSION['secret'] ?? '');
+$smarty->assign('session_hash', $session_hash);
+$smarty->assign('date', $date);
+$smarty->assign('system', $system);
+$smarty->assign('user', $user);
+
+//  ONLY LOAD HEAVY DATA IF USER LOGGED IN
+if ($user->_logged_in) {
+
+  //  OPTIONAL: comment for performance (recommended)
+  // $user->log_session();
+
+  // load emojis (once)
+  try {
+    $emojis = $user->get_emojis();
+    $smarty->assign('emojis', $emojis);
+  } catch (Exception $e) {
+    $smarty->assign('emojis', []);
+  }
+
+  // load reactions (once)
+  try {
+    $reactions = $user->get_reactions();
+    $smarty->assign('reactions', $reactions);
+    $smarty->assign('reactions_enabled', $reactions);
+  } catch (Exception $e) {
+    $smarty->assign('reactions', []);
+    $smarty->assign('reactions_enabled', []);
+  }
+
+}

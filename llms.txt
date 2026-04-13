@@ -1,0 +1,62 @@
+# Omaada.com: Social Media for Professional Growth & Marketing
+
+> Omaada is a social networking platform focused on professional growth, marketing, and community-driven content sharing. The site hosts feeds, pages, groups, blogs, events, marketplaces, courses and more to help professionals connect, share knowledge, and promote services.
+
+## Main Sections & Features
+- News Feed: Stream of recent posts, updates and shared links from the community.
+- Pages: Public pages for businesses, brands, and professional profiles.
+- Groups: Community groups centered on topics, industries, and interests.
+- Events: Create, discover and RSVP to professional events and meetups.
+- Reels: Short-form video content and promotional reels for creators.
+- Blogs: Long-form articles and posts on varied professional topics.
+- Market: Marketplace listings for products and services.
+- Offers: Time-bound deals and promotional offers.
+- Jobs: Job postings and recruitment listings.
+- Courses: Online courses and learning resources.
+- Forums: Discussion boards and topical forums for Q&A.
+
+## Key Site Functionality
+- Post creation (links, text, images, and media).
+- Commenting, likes, shares and basic engagement metrics.
+- Multilingual UI with language selection (English, French, Spanish, Portuguese, German, Turkish, Dutch, Italian, Russian, Romanian, Japanese, and others).
+- Account registration, sign-in, and user profiles.
+- Moderation guidelines and content policy (terms of service and community rules).
+- Contact, About, Terms & Privacy pages for legal and support information.
+
+## Typical Users & Use Cases
+- Professionals & freelancers promoting services and portfolios.
+- Small businesses and brands creating pages and offers.
+- Content creators publishing reels, blogs and course material.
+- Recruiters and job-seekers using Jobs and Marketplace.
+- Community organizers running Groups and Events.
+
+## Useful Links (site-relative)
+- / (Home / News Feed)
+- /pages
+- /groups
+- /events
+- /reels
+- /blogs
+- /market
+- /offers
+- /jobs
+- /courses
+- /forums
+- /about
+- /terms
+- /privacy
+- /contact-us
+- /directory
+
+## Contact & Support
+- General enquiries: use the Contact Us page (/contact-us).
+- Legal & policy: About / Terms / Privacy pages linked in the footer.
+- Language support: footer language selector and multi-language pages.
+
+## Notes for Developers & SEOs
+- Site appears to be content-rich and community-driven; ensure pagination and canonical tags are present for feeds and blog lists.
+- Monitor user-generated content for moderation compliance and duplicate-content issues.
+- Consider structured data for events, jobs, products (marketplace), and courses to improve search visibility.
+
+## Last checked
+- Content and navigation structure reviewed from the public homepage and footer of https://www.omaada.com/.

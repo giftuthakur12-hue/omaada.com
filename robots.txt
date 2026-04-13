@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /content/backups
+Disallow: /content/languages
+Disallow: /includes/libs
+Disallow: /install
+Disallow: /admincp
+Disallow: /modcp
+Disallow: /offers
+Disallow: /search/
+Sitemap: https://www.omaada.com/sitemap_index.xml
